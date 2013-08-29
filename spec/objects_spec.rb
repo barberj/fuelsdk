@@ -1,5 +1,4 @@
 require 'spec_helper.rb'
-require 'objects_helper_spec.rb'
 
 describe FuelSDK::Objects::Base do
 

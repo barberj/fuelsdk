@@ -17,11 +17,11 @@ module FuelSDK
     end
     alias :more? :more
 
-    def initialize raw, client
+    def initialize raw=nil, client=nil
       @client = client # keep connection with client in case we request more
       @results = []
       @raw = raw
-      unpack raw
+      unpack raw if raw
     rescue => ex # all else fails return raw
       puts ex.message
       raw

@@ -6,11 +6,11 @@ describe FuelSDK::Soap do
 
   subject { client }
 
-  it { should respond_to(:soap_get) }
   it { should respond_to(:soap_post) }
   it { should respond_to(:soap_patch) }
   it { should respond_to(:soap_delete) }
   it { should respond_to(:soap_describe) }
+  it { should respond_to(:soap_perform) }
 
   it { should respond_to(:header) }
   it { should_not respond_to(:header=) }

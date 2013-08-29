@@ -1,6 +1,15 @@
 require 'savon'
 module FuelSDK
 
+  class SoapError < StandardError
+    attr_reader :response
+    def initialize response=nil, message=nil
+      response.instance_variable_set(:@message, message) # back door update
+      @response = response
+      super message
+    end
+  end
+
   class SoapResponse < FuelSDK::Response
 
     def continue
@@ -124,7 +133,21 @@ module FuelSDK
       soap_request :describe, message
     end
 
+    def soap_filter filter_criteria
+    end
+
+    def set_error_message response
+      response.instance_variable_set(:@message, "Unable to get #{object_type}") # back door update
+    end
+
+    def get_all_object_properties object_type
+      rsp = soap_describe object_type
+      raise SoapError.new(response, "Unable to get #{object_type}") unless rsp.success?
+      rsp.retrievable
+    end
+
     def soap_get object_type, properties=nil, filter=nil
+
       if properties.nil? or properties.empty?
         rsp = soap_describe object_type
         if rsp.success?
@@ -155,6 +178,9 @@ module FuelSDK
       message = {'RetrieveRequest' => message}
 
       soap_request :retrieve, message
+
+    rescue SoapError => err
+      return err.response
     end
 
     def soap_post object_type, properties
