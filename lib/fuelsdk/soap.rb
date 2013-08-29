@@ -169,6 +169,19 @@ module FuelSDK
       soap_cud :delete, object_type, properties
     end
 
+    def soap_perform object_type, properties, action
+      message = {
+        'Action' => action,
+        'Definitions' => {
+          'Definition' => properties,
+          :attributes! => {
+            'Definition' => {'xsi:type' => ('tns:' + object_type)}
+          }
+        }
+      }
+      soap_request :perform, message
+    end
+
     private
 
       def soap_cud action, object_type, properties
