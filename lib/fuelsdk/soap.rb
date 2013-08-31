@@ -133,50 +133,53 @@ module FuelSDK
       soap_request :describe, message
     end
 
-    def soap_filter filter_criteria
-    end
-
-    def set_error_message response
-      response.instance_variable_set(:@message, "Unable to get #{object_type}") # back door update
-    end
-
     def get_all_object_properties object_type
       rsp = soap_describe object_type
       raise SoapError.new(response, "Unable to get #{object_type}") unless rsp.success?
       rsp.retrievable
     end
 
-    def soap_get object_type, properties=nil, filter=nil
-
+    def normalize_object_properties object_type, properties
       if properties.nil? or properties.empty?
-        rsp = soap_describe object_type
-        if rsp.success?
-          properties = rsp.retrievable
-        else
-          rsp.instance_variable_set(:@message, "Unable to get #{object_type}") # back door update
-          return rsp
-        end
+        get_all_object_properties object_type
       elsif properties.kind_of? Hash
-        properties = properties.keys
+        properties.keys
       elsif properties.kind_of? String
-        properties = [properties]
+        [properties]
       end
+    end
 
-      message = {'ObjectType' => object_type, 'Properties' => properties}
+    def add_simple_filter_part message
+      message[:attributes!] = { 'Filter' => { 'xsi:type' => 'tns:SimpleFilterPart' }}
+    end
 
+    def add_complex_filter_part message
+      message[:attributes!] = { 'Filter' => { 'xsi:type' => 'tns:ComplexFilterPart' }}
+      message['Filter'][:attributes!] = {
+        'LeftOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' },
+        'RightOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' }
+      }
+    end
+
+    def normalize_message_filter message, filter
       if filter and filter.kind_of? Hash
         message['Filter'] = filter
-        message[:attributes!] = { 'Filter' => { 'xsi:type' => 'tns:SimpleFilterPart' } }
 
         if filter.has_key?('LogicalOperator')
-          message[:attributes!] = { 'Filter' => { 'xsi:type' => 'tns:ComplexFilterPart' }}
-          message['Filter'][:attributes!] = {
-            'LeftOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' },
-            'RightOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' }}
+          add_complex_filter_part message
+        else
+          add_simple_filter_part message
         end
       end
-      message = {'RetrieveRequest' => message}
 
+      {'RetrieveRequest' => message}
+    end
+
+    def soap_get object_type, properties=nil, filter=nil
+
+      properties = normalize_object_properties object_type, properties
+      message = {'ObjectType' => object_type, 'Properties' => properties}
+      message = normalize_message_filter message, filter
       soap_request :retrieve, message
 
     rescue SoapError => err
