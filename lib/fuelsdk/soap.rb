@@ -1,7 +1,7 @@
 require 'savon'
 module FuelSDK
 
-  class SoapError < StandardError
+  class DescribeError < StandardError
     attr_reader :response
     def initialize response=nil, message=nil
       response.instance_variable_set(:@message, message) # back door update
@@ -135,12 +135,16 @@ module FuelSDK
 
     def get_all_object_properties object_type
       rsp = soap_describe object_type
-      raise SoapError.new(response, "Unable to get #{object_type}") unless rsp.success?
+      raise DescribeError.new(rsp, "Unable to get #{object_type}") unless rsp.success?
       rsp
     end
 
     def get_retrievable_properties object_type
       get_all_object_properties(object_type).retrievable
+    end
+
+    def get_editable_properties object_type
+      get_all_object_properties(object_type).editable
     end
 
     def normalize_properties object_type, properties
@@ -200,7 +204,7 @@ module FuelSDK
 
       soap_request :retrieve, 'RetrieveRequest' => message
 
-    rescue SoapError => err
+    rescue DescribeError => err
       return err.response
     end
 
@@ -229,12 +233,19 @@ module FuelSDK
       soap_request :perform, message
     end
 
+    def create_objects_message objects, object_type
+      {
+        'Objects' => objects,
+        :attributes! => {'Objects' => { 'xsi:type' => ('tns:' + object_type) }}
+      }
+    end
+
     private
 
       def soap_cud action, object_type, properties
         # get a list of attributes so we can seperate
         # them from standard object properties
-        type_attrs = soap_describe(object_type).editable
+        type_attrs = get_editable_properties object_type
 
         properties = [properties] unless properties.kind_of? Array
         properties.each do |p|
@@ -249,10 +260,8 @@ module FuelSDK
           (p['Attributes'] ||= []).concat formated_attrs unless formated_attrs.empty?
         end
 
-        message = {
-          'Objects' => properties,
-          :attributes! => { 'Objects' => { 'xsi:type' => ('tns:' + object_type) } }
-        }
+        message = create_objects_message properties, object_type
+
         soap_request action, message
       end
 

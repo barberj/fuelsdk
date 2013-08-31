@@ -5,6 +5,34 @@ describe FuelSDK::Soap do
   let(:client) { FuelSDK::Client.new }
   subject { client }
 
+  describe '#get_all_object_properties' do
+
+    it 'returns properties for object_type' do
+      response = mock(FuelSDK::DescribeResponse)
+      response.should_receive(:success?).and_return(true)
+
+      subject.should_receive(:soap_describe)
+        .with('some object')
+        .and_return(response)
+
+      expect(subject.get_all_object_properties('some object'))
+        .to eq response
+    end
+
+    it 'raises an DescribeError when describe is unsuccessful' do
+      response = mock(FuelSDK::DescribeResponse)
+      response.should_receive(:success?).and_return(false)
+      response.stub(:status).and_return('ERROR')
+
+      subject.should_receive(:soap_describe)
+        .with('some object')
+        .and_return(response)
+
+      expect { subject.get_all_object_properties('some object') }
+        .to raise_error FuelSDK::DescribeError
+    end
+  end
+
   describe '#normalize_properties' do
     it 'when properties are nil gets_all_object_properties' do
       subject.should_receive(:get_retrievable_properties)
@@ -130,7 +158,7 @@ describe FuelSDK::Soap do
     end
 
     it 'request an invalid object without properties' do
-      subject.should_receive(:get_retrievable_properties) { raise FuelSDK::SoapError.new(
+      subject.should_receive(:get_retrievable_properties) { raise FuelSDK::DescribeError.new(
           FuelSDK::DescribeResponse.new,  "Unable to get invalid"
         )
       }
