@@ -136,12 +136,16 @@ module FuelSDK
     def get_all_object_properties object_type
       rsp = soap_describe object_type
       raise SoapError.new(response, "Unable to get #{object_type}") unless rsp.success?
-      rsp.retrievable
+      rsp
+    end
+
+    def get_retrievable_properties object_type
+      get_all_object_properties(object_type).retrievable
     end
 
     def normalize_properties object_type, properties
       if properties.nil? or properties.blank?
-        get_all_object_properties object_type
+        get_retrievable_properties object_type
       elsif properties.kind_of? Hash
         properties.keys
       elsif properties.kind_of? String
