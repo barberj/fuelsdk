@@ -139,48 +139,62 @@ module FuelSDK
       rsp.retrievable
     end
 
-    def normalize_object_properties object_type, properties
-      if properties.nil? or properties.empty?
+    def normalize_properties object_type, properties
+      if properties.nil? or properties.blank?
         get_all_object_properties object_type
       elsif properties.kind_of? Hash
         properties.keys
       elsif properties.kind_of? String
         [properties]
+      elsif properties.kind_of? Symbol
+        [properties.to_s]
+      else
+        properties
       end
     end
 
-    def add_simple_filter_part message
-      message[:attributes!] = { 'Filter' => { 'xsi:type' => 'tns:SimpleFilterPart' }}
-    end
-
-    def add_complex_filter_part message
-      message[:attributes!] = { 'Filter' => { 'xsi:type' => 'tns:ComplexFilterPart' }}
-      message['Filter'][:attributes!] = {
-        'LeftOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' },
-        'RightOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' }
+    def add_simple_filter_part filter
+      {
+        'Filter' => filter,
+        :attributes! => { 'Filter' => { 'xsi:type' => 'tns:SimpleFilterPart' }}
       }
     end
 
-    def normalize_message_filter message, filter
+    def add_complex_filter_part filter
+      filter[:attributes!] = {
+        'LeftOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' },
+        'RightOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' }
+      }
+
+      {
+        'Filter' => filter,
+        :attributes! => { 'Filter' => { 'xsi:type' => 'tns:ComplexFilterPart' }}
+      }
+    end
+
+    def normalize_filter filter
       if filter and filter.kind_of? Hash
-        message['Filter'] = filter
-
         if filter.has_key?('LogicalOperator')
-          add_complex_filter_part message
+          add_complex_filter_part filter
         else
-          add_simple_filter_part message
+          add_simple_filter_part filter
         end
+      else
+        {}
       end
+    end
 
-      {'RetrieveRequest' => message}
+    def create_object_type_message object_type, properties, filter
+      {'ObjectType' => object_type, 'Properties' => properties}.merge filter
     end
 
     def soap_get object_type, properties=nil, filter=nil
 
-      properties = normalize_object_properties object_type, properties
-      message = {'ObjectType' => object_type, 'Properties' => properties}
-      message = normalize_message_filter message, filter
-      soap_request :retrieve, message
+      properties = normalize_properties object_type, properties
+      filter = normalize_filter filter
+      message = create_object_type_message(object_type,  properties, filter)
+
+      soap_request :retrieve, 'RetrieveRequest' => message
 
     rescue SoapError => err
       return err.response
