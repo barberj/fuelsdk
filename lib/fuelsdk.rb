@@ -3,6 +3,7 @@ require "fuelsdk/version"
 require 'rubygems'
 require 'date'
 require 'jwt'
+require 'active_support/inflector'
 
 module FuelSDK
   require 'fuelsdk/utils'
