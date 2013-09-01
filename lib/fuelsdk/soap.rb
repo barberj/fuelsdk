@@ -253,43 +253,26 @@ module FuelSDK
       soap_cud :delete, object_type, properties
     end
 
-    def create_action_message object_type, action, properties
+    def create_action_message message_type, object_type, properties, action
+      properties = [properties] unless properties.kind_of? Array
       {
         'Action' => action,
-        'Configurations' => {
-          'Configuration' => properties,
+        message_type => {
+          message_type.singularize => properties,
           :attributes! => {
-            'Configuration' => { 'xsi:type' => ('tns:' + object_type) }
+            message_type.singularize => { 'xsi:type' => ('tns:' + object_type) }
           }
         }
       }
     end
 
     def soap_perform object_type, properties, action
-      message = {
-        'Action' => action,
-        'Definitions' => {
-          'Definition' => properties,
-          :attributes! => {
-            'Definition' => {'xsi:type' => ('tns:' + object_type)}
-          }
-        }
-      }
-
+      message = create_action_message 'Definitions', object_type, properties, action
       soap_request :perform, message
     end
 
-    def soap_configure object_type, action, properties
-      message = {
-        'Action' => action,
-        'Configurations' => {
-          'Configuration' => properties ,
-          :attributes! => {
-            'Configuration' => { 'xsi:type' => ('tns:' + object_type) }
-          }
-        }
-      }
-
+    def soap_configure object_type, properties, action
+      message = create_action_message 'Configurations', object_type, properties, action
       soap_request :configure, message
     end
 
