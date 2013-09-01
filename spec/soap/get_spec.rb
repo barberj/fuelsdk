@@ -33,12 +33,12 @@ describe FuelSDK::Soap do
     end
   end
 
-  describe '#normalize_properties' do
+  describe '#normalize_properties_for_retrieve' do
     it 'when properties are nil gets_all_object_properties' do
       subject.should_receive(:get_retrievable_properties)
         .with('object').and_return('called all')
 
-      expect(subject.normalize_properties('object', nil)).to eq 'called all'
+      expect(subject.normalize_properties_for_retrieve('object', nil)).to eq 'called all'
     end
 
     describe 'when properties is a' do
@@ -48,22 +48,22 @@ describe FuelSDK::Soap do
       }
 
       it 'Hash returns keys' do
-        expect(subject.normalize_properties('object', {'Prop1' => 'a', 'Prop2' => 'b'}))
+        expect(subject.normalize_properties_for_retrieve('object', {'Prop1' => 'a', 'Prop2' => 'b'}))
           .to eq ['Prop1', 'Prop2']
       end
 
       it 'String returns Array' do
-        expect(subject.normalize_properties('object', 'Prop1'))
+        expect(subject.normalize_properties_for_retrieve('object', 'Prop1'))
           .to eq ['Prop1']
       end
 
       it 'Symbol returns Array' do
-        expect(subject.normalize_properties('object', :Prop1))
+        expect(subject.normalize_properties_for_retrieve('object', :Prop1))
           .to eq ['Prop1']
       end
 
       it 'Array returns Array' do
-        expect(subject.normalize_properties('object', ['Prop1']))
+        expect(subject.normalize_properties_for_retrieve('object', ['Prop1']))
           .to eq ['Prop1']
       end
     end
@@ -107,10 +107,96 @@ describe FuelSDK::Soap do
     end
   end
 
+  describe '#cache_properties' do
+    it 'raise an error if properties is not an Array' do
+
+      subject.should_not_receive(:cache)
+      expect { subject.cache_properties :retrievable, 'Subscriber', 'EmailAddress' }
+        .to raise_error
+    end
+
+    it 'caches properties' do
+      subject.should_receive(:cache).and_return({:retrievable => {}})
+      expect(subject.cache_properties :retrievable, 'Subscriber', ['EmailAddress'])
+        .to eq(['EmailAddress'])
+    end
+  end
+
+  describe '#cached_properties?' do
+    it 'returns cached properties' do
+      subject.should_receive(:cache).and_return(
+        {
+          :retrievable => {
+          'Subscriber' => ['EmailAddress']}
+        }
+      )
+
+      expect(subject.cached_properties?(:retrievable, 'Subscriber'))
+        .to eq ['EmailAddress']
+    end
+
+    it 'returns nil on error access cache' do
+      subject.should_receive(:cache).and_return(1)
+      expect(subject.cached_properties?(:retrievable, 'Subscriber'))
+        .to be_nil
+    end
+  end
+
+  describe '#retrievable_properties_cached?' do
+    it 'returns a list of retrievable properties for the object' do
+      subject.should_receive(:cached_properties?)
+        .with(:retrievable, 'item')
+        .and_return(['prop'])
+
+      expect(subject.retrievable_properties_cached? 'item').to eq(['prop'])
+    end
+
+    it 'returns nil if not cached' do
+      expect(subject.retrievable_properties_cached? 'missing').to be_nil
+    end
+  end
+
+  describe '#get_retrievable_properties' do
+    it 'returns cached properties' do
+      subject.should_receive(:retrievable_properties_cached?)
+        .with('object')
+        .and_return(['prop'])
+
+      subject.should_not_receive(:get_all_object_properties)
+      subject.should_not_receive(:cache_retrievable)
+
+      expect(subject.get_retrievable_properties('object')).to eq ['prop']
+    end
+
+    it 'requests and caches properties when not in cache' do
+      subject.should_receive(:retrievable_properties_cached?)
+        .with('object')
+        .and_return(nil)
+
+      response = mock(FuelSDK::DescribeResponse)
+      response.stub(:retrievable).and_return(['prop'])
+      subject.should_receive(:get_all_object_properties)
+        .and_return(response)
+
+      subject.should_receive(:cache_retrievable)
+        .with('object', ['prop'])
+        .and_return(['prop'])
+
+      expect(subject.get_retrievable_properties('object')).to eq ['prop']
+    end
+  end
+
+  describe '#cache_retrievable' do
+    it 'caches object properties to :retrievable' do
+      subject.cache_retrievable('Subscriber', ['Email'])
+      expect(subject.cache[:retrievable]).to eq 'Subscriber' => ['Email']
+    end
+  end
+
   describe '#soap_get' do
     it 'request with message created with normalized properties, filters' do
 
-      subject.should_receive(:normalize_properties)
+      subject.should_receive(:normalize_properties_for_retrieve)
         .with('end to end', nil).and_return([])
 
       subject.should_receive(:normalize_filter)

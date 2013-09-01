@@ -2,6 +2,16 @@ require 'spec_helper.rb'
 
 describe FuelSDK::Client do
 
+  it { should respond_to :cache }
+
+  describe '#cache' do
+    let(:client) { FuelSDK::Client.new }
+
+    it 'its default keys are retrievable and editable' do
+      expect(client.cache).to eq({:retrievable => {}, :editable => {}})
+    end
+  end
+
   context 'initialized' do
 
     it 'with client parameters' do

@@ -44,6 +44,13 @@ module FuelSDK
     include FuelSDK::Soap
     include FuelSDK::Rest
 
+    def cache
+      @cache ||= {
+        :retrievable => {},
+        :editable => {}
+      }
+    end
+
     def jwt= encoded_jwt
       raise 'Require app signature to decode JWT' unless self.signature
       decoded_jwt = JWT.decode(encoded_jwt, self.signature, true)

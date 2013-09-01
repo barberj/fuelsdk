@@ -139,15 +139,48 @@ module FuelSDK
       rsp
     end
 
+    def cache_properties action, object_type, properties
+      raise 'Properties should be in cache as a list' unless properties.kind_of? Array
+      cache[action][object_type] = properties
+    end
+
+    def cached_properties? action, object_type
+      cache[action][object_type] rescue nil
+    end
+
+    def retrievable_properties_cached? object_type
+      cached_properties? :retrievable, object_type
+    end
+
+    def cache_retrievable object_type, properties
+      cache_properties :retrievable, object_type, properties
+    end
+
     def get_retrievable_properties object_type
-      get_all_object_properties(object_type).retrievable
+      if props=retrievable_properties_cached?(object_type)
+        props
+      else
+        cache_retrievable object_type, get_all_object_properties(object_type).retrievable
+      end
+    end
+
+    def editable_properties_cached? object_type
+      cached_properties? :editable, object_type
+    end
+
+    def cache_editable object_type, properties
+      cache_properties :editable, object_type, properties
     end
 
     def get_editable_properties object_type
-      get_all_object_properties(object_type).editable
+      if props=editable_properties_cached?(object_type)
+        props
+      else
+        cache_editable object_type, get_all_object_properties(object_type).editable
+      end
     end
 
-    def normalize_properties object_type, properties
+    def normalize_properties_for_retrieve object_type, properties
       if properties.nil? or properties.blank?
         get_retrievable_properties object_type
       elsif properties.kind_of? Hash
@@ -198,7 +231,7 @@ module FuelSDK
 
     def soap_get object_type, properties=nil, filter=nil
 
-      properties = normalize_properties object_type, properties
+      properties = normalize_properties_for_retrieve object_type, properties
       filter = normalize_filter filter
       message = create_object_type_message(object_type,  properties, filter)
 
@@ -230,38 +263,45 @@ module FuelSDK
           }
         }
       }
+
       soap_request :perform, message
     end
 
-    def create_objects_message objects, object_type
+    def create_objects_message object_type, object_properties
+      raise 'Object properties must be a List' unless object_properties.kind_of? Array
+      raise 'Object properties must be a List of Hashes' unless object_properties.first.kind_of? Hash
+
       {
-        'Objects' => objects,
+        'Objects' => object_properties,
         :attributes! => {'Objects' => { 'xsi:type' => ('tns:' + object_type) }}
       }
+    end
+
+    def normalize_properties_for_cud object_type, properties
+      properties = [properties] unless properties.kind_of? Array
+
+      # get a list of attributes so we can seperate
+      # them from standard object properties
+      type_attrs = get_editable_properties object_type
+
+      properties.each do |p|
+        formated_attrs = []
+        p.each do |k, v|
+          if type_attrs.include? k
+            p.delete k
+            attrs = FuelSDK.format_name_value_pairs k => v
+            formated_attrs.concat attrs
+          end
+        end
+        (p['Attributes'] ||= []).concat formated_attrs unless formated_attrs.blank?
+      end
     end
 
     private
 
       def soap_cud action, object_type, properties
-        # get a list of attributes so we can seperate
-        # them from standard object properties
-        type_attrs = get_editable_properties object_type
-
-        properties = [properties] unless properties.kind_of? Array
-        properties.each do |p|
-          formated_attrs = []
-          p.each do |k, v|
-            if type_attrs.include? k
-              p.delete k
-              attrs = FuelSDK.format_name_value_pairs k => v
-              formated_attrs.concat attrs
-            end
-          end
-          (p['Attributes'] ||= []).concat formated_attrs unless formated_attrs.empty?
-        end
-
-        message = create_objects_message properties, object_type
-
+        properties = normalize_properties_for_cud object_type, properties
+        message = create_objects_message object_type, properties
         soap_request action, message
       end
 
