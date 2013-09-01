@@ -279,6 +279,7 @@ module FuelSDK
 
     def normalize_properties_for_cud object_type, properties
       properties = [properties] unless properties.kind_of? Array
+      raise 'Object properties must be a Hash' unless properties.first.kind_of? Hash
 
       # get a list of attributes so we can seperate
       # them from standard object properties
