@@ -5,10 +5,7 @@ module FuelSDK::Targeting
   include FuelSDK::HTTPRequest
 
   def endpoint
-    unless @endpoint
-      determine_stack
-    end
-    @endpoint
+    @endpoint ||= determine_stack
   end
 
   protected
@@ -16,8 +13,6 @@ module FuelSDK::Targeting
       options = {'params' => {'access_token' => self.access_token}}
       response = get("https://www.exacttargetapis.com/platform/v1/endpoints/soap", options)
       raise 'Unable to determine stack' unless response.success?
-      @endpoint = response['url']
-    rescue => e
-      raise 'Unable to determine stack using: ' + e.message
+      response['url']
     end
 end
