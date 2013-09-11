@@ -3,7 +3,7 @@ module FuelSDK
     # not doing accessor so user, can't update these values from response.
     # You will see in the code some of these
     # items are being updated via back doors and such.
-    attr_reader :code, :message, :results, :request_id, :body, :raw
+    attr_reader :code, :message, :results, :request_id, :body, :raw, :decoded_jwt
 
     # some defaults
     def success
@@ -53,9 +53,13 @@ module FuelSDK
 
     def jwt= encoded_jwt
       raise 'Require app signature to decode JWT' unless self.signature
-      decoded_jwt = JWT.decode(encoded_jwt, self.signature, true)
+      self.decoded_jwt=JWT.decode(encoded_jwt, self.signature, true)
+    end
 
+    def decoded_jwt= decoded_jwt
+      @decoded_jwt = decoded_jwt
       self.auth_token = decoded_jwt['request']['user']['oauthToken']
+      self.access_token = self.auth_token
       self.internal_token = decoded_jwt['request']['user']['internalOauthToken']
       self.refresh_token = decoded_jwt['request']['user']['refreshToken']
       #@authTokenExpiration = Time.new + decoded_jwt['request']['user']['expiresIn']

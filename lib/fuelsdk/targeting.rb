@@ -15,6 +15,7 @@ module FuelSDK::Targeting
     def determine_stack
       options = {'params' => {'access_token' => self.access_token}}
       response = get("https://www.exacttargetapis.com/platform/v1/endpoints/soap", options)
+      raise 'Unable to determine stack' unless response.success?
       @endpoint = response['url']
     rescue => e
       raise 'Unable to determine stack using: ' + e.message
