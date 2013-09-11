@@ -79,29 +79,32 @@ module FuelSDK
       self.wsdl = params["defaultwsdl"] if params["defaultwsdl"]
     end
 
-    def refresh force=false
+    def request_token_data
       raise 'Require Client Id and Client Secret to refresh tokens' unless (id && secret)
+      Hash.new.tap do |h|
+        h['clientId']= id
+        h['clientSecret'] = secret
+        h['refreshToken'] = refresh_token if refresh_token
+        h['accessType'] = 'offline'
+      end
+    end
 
+    def request_token_options data
+      Hash.new.tap do |h|
+        h['data'] = data
+        h['content_type'] = 'application/json'
+        h['params'] = {'legacy' => 1}
+      end
+    end
+
+    def refresh force=false
       if (self.auth_token.nil? || force)
-        payload = Hash.new.tap do |h|
-          h['clientId']= id
-          h['clientSecret'] = secret
-          h['refreshToken'] = refresh_token if refresh_token
-          h['accessType'] = 'offline'
-        end
-
-        options = Hash.new.tap do |h|
-          h['data'] = payload
-          h['content_type'] = 'application/json'
-          h['params'] = {'legacy' => 1}
-        end
-
+        options =  request_token_options(request_token_data)
         response = post("https://auth.exacttargetapis.com/v1/requestToken", options)
         raise "Unable to refresh token: #{response['message']}" unless response.has_key?('accessToken')
 
         self.auth_token = response['accessToken']
         self.internal_token = response['legacyToken']
-        #@authTokenExpiration = Time.new + tokenResponse['expiresIn']
         self.refresh_token = response['refreshToken'] if response.has_key?("refreshToken")
       end
     end
