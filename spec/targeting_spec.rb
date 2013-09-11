@@ -25,21 +25,39 @@ describe FuelSDK::Targeting do
   }
 
   describe '#determine_stack' do
-    it 'when successful returns endpoint' do
-      client.stub(:get)
-        .with('https://www.exacttargetapis.com/platform/v1/endpoints/soap', {'params'=>{'access_token'=>'open_sesame'}})
-        .and_return(response)
-      client.should_receive(:auth_token).and_return('open_sesame')
-      expect(client.send(:determine_stack)).to eq 'S#.authentication.target'
+    describe 'without auth_token' do
+      it 'calls refresh' do
+        client.stub(:refresh) {
+          client.instance_variable_set('@auth_token', 'open_sesame')
+        }
+        client.stub(:get)
+          .with('https://www.exacttargetapis.com/platform/v1/endpoints/soap',
+            {'params'=>{'access_token'=>'open_sesame'}})
+          .and_return(response)
+      end
     end
 
-    it 'raises error on unsuccessful responses' do
-      client.stub(:get).and_return{
-        rsp = double(FuelSDK::HTTPResponse)
-        rsp.stub(:success?).and_return(false)
-        rsp
-      }
-      expect{ client.send(:determine_stack) }.to raise_error 'Unable to determine stack'
+    describe 'with valid auth_token' do
+      before :each do
+        client.should_receive(:auth_token).twice.and_return('open_sesame')
+      end
+
+      it 'when successful returns endpoint' do
+        client.stub(:get)
+          .with('https://www.exacttargetapis.com/platform/v1/endpoints/soap',
+            {'params'=>{'access_token'=>'open_sesame'}})
+          .and_return(response)
+        expect(client.send(:determine_stack)).to eq 'S#.authentication.target'
+      end
+
+      it 'raises error on unsuccessful responses' do
+        client.stub(:get).and_return{
+          rsp = double(FuelSDK::HTTPResponse)
+          rsp.stub(:success?).and_return(false)
+          rsp
+        }
+        expect{ client.send(:determine_stack) }.to raise_error 'Unable to determine stack'
+      end
     end
   end
 
