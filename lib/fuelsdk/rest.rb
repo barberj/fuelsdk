@@ -67,7 +67,7 @@ module FuelSDK
       def rest_request action, url, options={}
         retried = false
         begin
-          (options['params'] ||= {}).merge! 'access_token' => access_token
+          (options['params'] ||= {}).merge! 'access_token' => auth_token
           rsp = rest_client.send(action, url, options)
           raise 'Unauthorized' if rsp.message == 'Unauthorized'
         rescue

@@ -37,7 +37,7 @@ describe FuelSDK::Soap do
         .with('object')
         .and_return(nil)
 
-      response = mock(FuelSDK::DescribeResponse)
+      response = double(FuelSDK::DescribeResponse)
       response.stub(:editable).and_return(['prop'])
       subject.should_receive(:get_all_object_properties)
         .and_return(response)

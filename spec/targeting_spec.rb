@@ -11,7 +11,7 @@ describe FuelSDK::Targeting do
   it { should respond_to(:post) }
   it { should respond_to(:patch) }
   it { should respond_to(:delete) }
-  it { should respond_to(:access_token) }
+  it { should respond_to(:auth_token) }
 
   let(:response) {
     rsp = double(FuelSDK::HTTPResponse)
@@ -29,7 +29,7 @@ describe FuelSDK::Targeting do
       client.stub(:get)
         .with('https://www.exacttargetapis.com/platform/v1/endpoints/soap', {'params'=>{'access_token'=>'open_sesame'}})
         .and_return(response)
-      client.should_receive(:access_token).and_return('open_sesame')
+      client.should_receive(:auth_token).and_return('open_sesame')
       expect(client.send(:determine_stack)).to eq 'S#.authentication.target'
     end
 
