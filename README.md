@@ -81,7 +81,7 @@ All methods on Fuel SDK objects return a generic object that follows the same st
 - code: HTTP Error Code (will always be 200 for SOAP requests)
 - message: Text values containing more details in the event of an error
 - results: Collection containing the details unique to the method called.
- - more? - Boolean value that indicates on Get requests if more data is available.
+- more? - Boolean value that indicates on Get requests if more data is available.
 
 
 ## Samples ##
