@@ -62,8 +62,7 @@ describe FuelSDK::Soap do
         client.stub(:soap_request) do |action, message|
           [action, message]
         end
-
-        client.stub_chain(:soap_describe,:editable)
+        client.should_receive(:get_editable_properties)
           .and_return(['First Name', 'Last Name', 'Gender'])
         client
       }
