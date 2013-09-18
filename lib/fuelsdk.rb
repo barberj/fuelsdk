@@ -4,18 +4,7 @@ require 'rubygems'
 require 'date'
 require 'jwt'
 require 'active_support/inflector'
-
-class Array
-  class << self
-    def wrap subject
-      if subject.kind_of? Array
-        subject
-      else
-        [subject]
-      end
-    end
-  end
-end
+require "active_support/core_ext/array/wrap"
 
 module FuelSDK
   require 'fuelsdk/utils'
