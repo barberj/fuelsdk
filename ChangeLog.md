@@ -1,6 +1,13 @@
 FuelSDK-Ruby
 ============
 
+2013-09-18: Version 0.1.3
+```
+  augment soap_cud to handle dataextensions better
+
+  array.wrap so we can be less terse
+```
+
 2013-09-18: Version 0.1.2
 ```
   get dataextension properties sugar method

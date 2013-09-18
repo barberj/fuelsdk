@@ -47,7 +47,7 @@ module FuelSDK
       def unpack_rslts raw
         @more = (raw.body[raw.body.keys.first][:overall_status] == 'MoreDataAvailable')
         rslts = raw.body[raw.body.keys.first][:results] || []
-        rslts = [rslts] unless rslts.kind_of? Array
+        rslts = Array.wrap(rslts)
         rslts
       rescue
         []
@@ -71,7 +71,7 @@ module FuelSDK
         # ugly, but a necessary evil
         _exts = definition[:extended_properties].nil? ? {} : definition[:extended_properties] # if they have no extended properties nil is returned
         _exts = _exts[:extended_property] || [] # if no properties nil and we need an array to iterate
-        _exts = [_exts] unless _exts.kind_of? Array # if they have only one extended property we need to wrap it in array to iterate
+        _exts = Array.wrap(_exts) # if they have only one extended property we need to wrap it in array to iterate
         _exts.each do  |p|
           @viewable << p[:name] if p[:is_viewable]
           @editable << p[:name] if p[:is_editable]
@@ -121,16 +121,41 @@ module FuelSDK
       )
     end
 
-    def soap_describe object_type
-      message = {
+    def describe_object_type_message object_type
+      {
         'DescribeRequests' => {
           'ObjectDefinitionRequest' => {
             'ObjectType' => object_type
           }
         }
       }
+    end
 
-      soap_request :describe, message
+    def describe_dataextension_message dataextension
+      {
+        'Property' => "DataExtension.CustomerKey",
+        'SimpleOperator' => 'equals',
+        'Value' => dataextension
+      }
+    end
+
+    def describe_data_extension dataextension
+      soap_get('DataExtensionField',
+        'Name',
+        describe_dataextension_message(dataextension)
+      )
+    end
+
+    def soap_describe object_type
+      soap_request :describe, describe_object_type_message(object_type)
+    end
+
+    def describe object_type
+      rsp = soap_describe(object_type)
+      unless rsp.success?
+        rsp = describe_data_extension object_type
+      end
+      rsp
     end
 
     def get_all_object_properties object_type
@@ -140,12 +165,8 @@ module FuelSDK
     end
 
     def get_dataextension_properties dataextension
-      soap_get('DataExtensionField',
-        'Name',
-        'Property' => "DataExtension.CustomerKey",
-        'SimpleOperator' => 'equals',
-        'Value' => dataextension
-      ).results.collect{|f| f[:name]}
+      describe_dataextension(dataextension)
+        .results.collect{|f| f[:name]}
     end
 
     def cache_properties action, object_type, properties
@@ -168,6 +189,8 @@ module FuelSDK
     def get_retrievable_properties object_type
       if props=retrievable_properties_cached?(object_type)
         props
+      elsif is_a_dataextension? object_type
+        []
       else
         cache_retrievable object_type, get_all_object_properties(object_type).retrievable
       end
@@ -184,6 +207,8 @@ module FuelSDK
     def get_editable_properties object_type
       if props=editable_properties_cached?(object_type)
         props
+      elsif is_a_dataextension? object_type
+        []
       else
         cache_editable object_type, get_all_object_properties(object_type).editable
       end
@@ -263,7 +288,7 @@ module FuelSDK
     end
 
     def create_action_message message_type, object_type, properties, action
-      properties = [properties] unless properties.kind_of? Array
+      properties = Array.wrap(properties)
       {
         'Action' => action,
         message_type => {
@@ -295,14 +320,29 @@ module FuelSDK
       }
     end
 
-    def normalize_properties_for_cud object_type, properties
-      properties = [properties] unless properties.kind_of? Array
-      raise 'Object properties must be a Hash' unless properties.first.kind_of? Hash
+    def format_dataextension_cud_properties properties
+      Array.wrap(properties).each do |p|
+        formated_attrs = []
+        p.each do |k, v|
+          unless k == 'CustomerKey'
+            p.delete k
+            attrs = FuelSDK.format_name_value_pairs k => v
+            formated_attrs.concat attrs
+          end
+        end
+        unless formated_attrs.blank?
+          p['Properties'] ||= {}
+          (p['Properties']['Property'] ||= []).concat formated_attrs
+        end
+      end
+    end
 
-      # get a list of attributes so we can seperate
-      # them from standard object properties
+    def is_a_dataextension? object_type
+      object_type == 'DataExtensionObject'
+    end
+
+    def format_object_cud_properties object_type, properties
       type_attrs = get_editable_properties object_type
-
       properties.each do |p|
         formated_attrs = []
         p.each do |k, v|
@@ -314,6 +354,18 @@ module FuelSDK
         end
         (p['Attributes'] ||= []).concat formated_attrs unless formated_attrs.blank?
       end
+    end
+
+    def normalize_properties_for_cud object_type, properties
+      properties = Array.wrap(properties)
+      raise 'Object properties must be a Hash' unless properties.first.kind_of? Hash
+
+      if is_a_dataextension? object_type
+        format_dataextension_cud_properties properties
+      else
+        format_object_cud_properties object_type, properties
+      end
+
     end
 
     private
