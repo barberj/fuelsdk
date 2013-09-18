@@ -3,7 +3,7 @@ FuelSDK-Ruby
 
 2013-09-18: Version 0.1.2
 ```
-  get properties for dataextension for retrieve and edit calls
+  get dataextension properties sugar method
 
   clear soap client on refresh so the client gets re-established with header with new token
 
