@@ -90,15 +90,20 @@ module FuelSDK
     end
 
     def request_token_options data
-      Hash.new.tap do |h|
-        h['data'] = data
-        h['content_type'] = 'application/json'
-        h['params'] = {'legacy' => 1}
-      end
+      {
+        'data' => data,
+        'content_type' => 'application/json',
+        'params' => {'legacy' => 1}
+      }
+    end
+
+    def clear_clients
+      instance_variable_set '@soap_client', nil
     end
 
     def refresh force=false
       if (self.auth_token.nil? || force)
+        clear_clients
         options =  request_token_options(request_token_data)
         response = post("https://auth.exacttargetapis.com/v1/requestToken", options)
         raise "Unable to refresh token: #{response['message']}" unless response.has_key?('accessToken')

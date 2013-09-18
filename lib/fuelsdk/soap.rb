@@ -139,6 +139,15 @@ module FuelSDK
       rsp
     end
 
+    def get_dataextension_properties dataextension
+      soap_get('DataExtensionField',
+        'Name',
+        'Property' => "DataExtension.CustomerKey",
+        'SimpleOperator' => 'equals',
+        'Value' => dataextension
+      ).results.collect{|f| f[:name]}
+    end
+
     def cache_properties action, object_type, properties
       raise 'Properties should be in cache as a list' unless properties.kind_of? Array
       cache[action][object_type] = properties

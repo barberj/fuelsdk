@@ -161,6 +161,49 @@ describe FuelSDK::Client do
 
     let(:client) { FuelSDK::Client.new }
 
+    it 'does nothing if auth_token exists' do
+      client.should_receive(:auth_token).and_return(true)
+      client.should_not_receive(:clear_clients)
+      client.refresh
+    end
+
+    describe 'requests and sets new tokens' do
+      subject {
+        client.should_receive(:request_token_data)
+        client.should_receive(:request_token_options).and_return('options')
+        client.should_receive(:post)
+          .with("https://auth.exacttargetapis.com/v1/requestToken", 'options')
+          .and_return 'accessToken' => :access,
+            'legacyToken' => :legacy,
+            'refreshToken' => :refresh
+        client
+      }
+      it 'calls #clear_clients' do
+        subject.instance_variable_set '@soap_client', 'SOAP'
+        expect(subject.instance_variable_get '@soap_client').to eq 'SOAP'
+        subject.refresh
+        expect(subject.instance_variable_get '@soap_client').to be_nil
+      end
+      it 'sets auth_token' do
+        subject.refresh
+        expect(subject.auth_token).to eq :access
+      end
+      it 'sets internal_token' do
+        subject.refresh
+        expect(subject.internal_token).to eq :legacy
+      end
+      it 'sets refresh_token' do
+        subject.refresh
+        expect(subject.refresh_token).to eq :refresh
+      end
+
+      it 'sets auth_token when forced and auth_token is present' do
+        subject.auth_token = true
+        subject.refresh(true)
+        expect(subject.auth_token).to eq :access
+      end
+    end
+
     context 'raises an exception' do
 
       it 'when client id and secret are missing' do
@@ -177,22 +220,6 @@ describe FuelSDK::Client do
         expect { client.refresh }.to raise_exception 'Require Client Id and Client Secret to refresh tokens'
       end
     end
-
-    #context 'posts' do
-    #  let(:client) { FuelSDK::Client.new 'client' => { 'id' => 123, 'secret' => 'sssh'} }
-    #  it 'accessType=offline' do
-    #  client.stub(:post)
-    #    .with({'clientId' => 123, 'secret' => 'ssh', 'accessType' => 'offline'})
-    #    .and_return()
-    #end
-
-    #context 'updates' do
-    #  let(:client) { FuelSDK::Client.new 'client' => { 'id' => 123, 'secret' => 'sssh'} }
-
-    #  it 'access_token' do
-    #    #client.stub(:post).
-    #  end
-    #end
   end
 
   describe 'includes HTTPRequest' do
