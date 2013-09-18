@@ -208,69 +208,26 @@ module FuelSDK
       end
 
       def post
-        munge_properties self.properties
+        add_customer_key self.properties
         super
       end
 
       def patch
-        munge_properties self.properties
+        add_customer_key self.properties
         super
       end
 
       def delete
-        munge_keys self.properties
+        add_customer_key self.properties
         super
       end
 
       private
-        #::TODO::
-        # opportunity for meta programming here... but need to get this out the door
-        def munge_keys d
-          d.each do |o|
-
-            next if explicit_keys(o) && explicit_customer_key(o)
-
-            formatted = []
-            o['CustomerKey'] = customer_key unless explicit_customer_key o
-            unless explicit_properties(o)
-              o.each do |k, v|
-                next if k == 'CustomerKey'
-                formatted.concat FuelSDK.format_name_value_pairs k => v
-                o.delete k
-              end
-              o['Keys'] = {'Key' => formatted }
-            end
+        def add_customer_key data
+          data.each do |d|
+            next if d.include? 'CustomerKey'
+            d['CustomerKey'] = customer_key
           end
-        end
-
-        def explicit_keys h
-          h['Keys'] and h['Keys']['Key']
-        end
-
-        def munge_properties d
-          d.each do |o|
-
-            next if explicit_properties(o) && explicit_customer_key(o)
-
-            formatted = []
-            o['CustomerKey'] = customer_key unless explicit_customer_key o
-            unless explicit_properties(o)
-              o.each do |k, v|
-                next if k == 'CustomerKey'
-                formatted.concat FuelSDK.format_name_value_pairs k => v
-                o.delete k
-              end
-              o['Properties'] = {'Property' => formatted }
-            end
-          end
-        end
-
-        def explicit_properties h
-          h['Properties'] and h['Properties']['Property']
-        end
-
-        def explicit_customer_key h
-          h['CustomerKey']
         end
 
         def retrieve_required
