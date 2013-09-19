@@ -461,11 +461,9 @@ describe FuelSDK::DataExtension::Row do
 
       subject.properties = [{'Name' => 'Justin'}]
 
-      expect(subject.post).to eq([
-        'DataExtensionObject', [{
-          'CustomerKey' => 'Subscribers',
-          'Properties' => {'Property' => [{'Name' => 'Name', 'Value' => 'Justin'}]}}]
-      ])
+      expect(subject.post).to eq(
+        ["DataExtensionObject", [{"Name"=>"Justin", "CustomerKey"=>"Subscribers"}]]
+      )
     end
   end
 end
