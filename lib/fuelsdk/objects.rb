@@ -4,7 +4,7 @@ module FuelSDK
       module Read
         attr_accessor :filter
         def get _id=nil
-          client.soap_get _id||id, properties, filter
+          client.soap_get _id||id, Array.wrap(properties), filter
         end
 
         def info
@@ -14,15 +14,15 @@ module FuelSDK
 
       module CUD #create, update, delete
         def post
-          client.soap_post id, properties
+          client.soap_post id, Array.wrap(properties)
         end
 
         def patch
-          client.soap_patch id, properties
+          client.soap_patch id, Array.wrap(properties)
         end
 
         def delete
-          client.soap_delete id, properties
+          client.soap_delete id, Array.wrap(properties)
         end
       end
     end
@@ -30,21 +30,21 @@ module FuelSDK
     module Rest
       module Read
         def get
-          client.rest_get id, properties
+          client.rest_get id, Array.wrap(properties)
         end
       end
 
       module CUD
         def post
-          client.rest_post id, properties
+          client.rest_post id, Array.wrap(properties)
         end
 
         def patch
-          client.rest_patch id, properties
+          client.rest_patch id, Array.wrap(properties)
         end
 
         def delete
-          client.rest_delete id, properties
+          client.rest_delete id, Array.wrap(properties)
         end
       end
     end
@@ -55,11 +55,6 @@ module FuelSDK
 
       alias props= properties= # backward compatibility
       alias authStub= client= # backward compatibility
-
-      def properties
-        @properties = [@properties].compact unless @properties.kind_of? Array
-        @properties
-      end
 
       def id
         self.class.id
@@ -260,7 +255,7 @@ module FuelSDK
           raise 'Unable to handle muliple DataExtension definitions and a field definition'
         end
 
-        d.each do |de|
+        Array.wrap(d).each do |de|
 
           if (explicit_fields(de) and (de['columns'] || de['fields'] || has_fields)) or
             (de['columns'] and (de['fields'] || has_fields)) or

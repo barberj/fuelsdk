@@ -6,13 +6,13 @@ describe FuelSDK::Objects::Base do
   subject{ object }
 
   describe '#properties' do
-    it 'is empty by default' do
-      expect(object.properties).to be_empty
+    it 'is nil by default' do
+      expect(object.properties).to be_nil
     end
 
-    it 'returns item in array when item is not an array' do
+    it 'returns property' do
       object.properties = {'name' => 'value'}
-      expect(object.properties).to eq([{'name' => 'value'}])
+      expect(object.properties).to eq({'name' => 'value'})
     end
 
     it 'returns array when assigned array' do
