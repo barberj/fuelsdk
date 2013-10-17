@@ -33,3 +33,6 @@ ET_UnsubEvent = FuelSDK::UnsubEvent
 ET_TriggeredSend = FuelSDK::TriggeredSend
 ET_Campaign = FuelSDK::Campaign
 ET_Get = FuelSDK::Get
+ET_Post = FuelSDK::Post
+ET_Delete = FuelSDK::Delete
+ET_Patch = FuelSDK::Patch
