@@ -167,10 +167,6 @@ module FuelSDK
         'DataExtensionField'
       end
       def get
-        if filter and filter.kind_of? Hash and \
-          filter.include? 'Property' and filter['Property'] == 'CustomerKey'
-          filter['Property'] = 'DataExtension.CustomerKey'
-        end
         super
       end
     end

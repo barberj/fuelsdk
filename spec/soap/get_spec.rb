@@ -254,4 +254,16 @@ describe FuelSDK::Soap do
     end
   end
 
+  describe '#normalize_customer_key' do
+    it 'changes CustomerKey to DataExtension.CustomerKey' do
+      expect(client.normalize_customer_key({'Property' => 'CustomerKey'}, 'DataExtensionField'))
+        .to eq({'Property' => 'DataExtension.CustomerKey'})
+    end
+
+    it 'nothing changes if object is not a DataExtension' do
+      expect(client.normalize_customer_key({'Property' => 'CustomerKey'}, 'SomethingObject'))
+        .to eq({'Property' => 'CustomerKey'})
+    end
+  end
+
 end

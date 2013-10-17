@@ -247,8 +247,19 @@ module FuelSDK
       }
     end
 
-    def normalize_filter filter
+    def normalize_customer_key filter, object_type
+      filter.tap do |f|
+        if is_a_dataextension? object_type
+          if filter['Property'] == 'CustomerKey'
+            f['Property'] = 'DataExtension.CustomerKey'
+          end
+        end
+      end
+    end
+
+    def normalize_filter filter, object_type=''
       if filter and filter.kind_of? Hash
+        normalize_customer_key filter, object_type
         if filter.has_key?('LogicalOperator')
           add_complex_filter_part filter
         else
@@ -338,7 +349,7 @@ module FuelSDK
     end
 
     def is_a_dataextension? object_type
-      object_type == 'DataExtensionObject'
+      object_type.start_with? 'DataExtension'
     end
 
     def format_object_cud_properties object_type, properties
