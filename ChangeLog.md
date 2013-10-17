@@ -1,7 +1,7 @@
 FuelSDK-Ruby
 ============
 
-2013-10-17: Version 0.1.4
+2013-10-17: Version 0.1.5
 ```
   moved dataextension property munging into client so not required to instantiate those objects.
 
