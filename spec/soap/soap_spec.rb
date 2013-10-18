@@ -19,7 +19,7 @@ describe FuelSDK::Soap do
   it { should respond_to(:wsdl=) }
 
   it { should respond_to(:endpoint) }
-  it { should_not respond_to(:endpoint=) }
+  it { should respond_to(:endpoint=) }
 
   it { should respond_to(:soap_client) }
 
