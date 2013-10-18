@@ -1,6 +1,6 @@
 module FuelSDK::Targeting
   attr_accessor :auth_token
-  attr_reader :endpoint
+  attr_accessor :endpoint
 
   include FuelSDK::HTTPRequest
 
