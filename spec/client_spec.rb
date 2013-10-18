@@ -163,7 +163,7 @@ describe FuelSDK::Client do
 
     it 'does nothing if auth_token exists' do
       client.should_receive(:auth_token).and_return(true)
-      client.should_not_receive(:clear_clients)
+      client.should_not_receive(:clear_client!)
       client.refresh
     end
 
@@ -178,7 +178,7 @@ describe FuelSDK::Client do
             'refreshToken' => :refresh
         client
       }
-      it 'calls #clear_clients' do
+      it 'calls #clear_client!' do
         subject.instance_variable_set '@soap_client', 'SOAP'
         expect(subject.instance_variable_get '@soap_client').to eq 'SOAP'
         subject.refresh

@@ -81,11 +81,12 @@ module FuelSDK
 
     def request_token_data
       raise 'Require Client Id and Client Secret to refresh tokens' unless (id && secret)
-      Hash.new.tap do |h|
-        h['clientId']= id
-        h['clientSecret'] = secret
+      {
+        'clientId' => id,
+        'clientSecret' => secret,
+        'accessType' => 'offline'
+      }.tap do |h|
         h['refreshToken'] = refresh_token if refresh_token
-        h['accessType'] = 'offline'
       end
     end
 
@@ -97,13 +98,13 @@ module FuelSDK
       }
     end
 
-    def clear_clients
-      instance_variable_set '@soap_client', nil
+    def clear_client!
+      @soap_client = nil
     end
 
     def refresh force=false
       if (self.auth_token.nil? || force)
-        clear_clients
+        clear_client!
         options =  request_token_options(request_token_data)
         response = post("https://auth.exacttargetapis.com/v1/requestToken", options)
         raise "Unable to refresh token: #{response['message']}" unless response.has_key?('accessToken')
