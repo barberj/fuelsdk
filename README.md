@@ -1,4 +1,4 @@
-fuelsdk [![Gem Version](https://badge.fury.io/rb/fuelsdk.png)](http://badge.fury.io/rb/fuelsdk)
+fuelsdk [![Gem Version](https://badge.fury.io/rb/fuelsdk.png)](http://badge.fury.io/rb/fuelsdk) [![Code Climate](https://codeclimate.com/github/barberj/fuelsdk.png)](https://codeclimate.com/github/barberj/fuelsdk)
 ============
 
 ExactTarget Fuel SDK for Ruby
