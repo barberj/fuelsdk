@@ -5,15 +5,28 @@ lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'fuelsdk'
+require 'pry'
+require 'webmock/rspec'
+require "savon/mock/spec_helper"
 
 RSpec.configure do |config|
   config.mock_with :rspec
+  config.include Savon::SpecHelper
 
   # Use color in STDOUT
   config.color_enabled = true
 
   # Use the specified formatter
   config.formatter = :documentation
+
+  config.before(:all) do
+    savon.mock!
+  end
+
+  config.after(:all) do
+    savon.unmock!
+  end
+
 end
 
 shared_examples_for 'Response Object' do

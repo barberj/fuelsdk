@@ -71,19 +71,22 @@ describe FuelSDK::Soap do
 
   describe '#normalize_filter' do
     it 'returns complex filter part when filter contains LogicalOperator key' do
-      expect(subject.normalize_filter({'LogicalOperator' => 'AND'}))
+      expect(subject.normalize_filter({'LogicalOperator' => 'AND', 'LeftOperand' => {}, 'RightOperand' => {}}))
         .to eq(
           {
             'Filter' => {
               'LogicalOperator' => 'AND',
-              :attributes! => {
-                'LeftOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' },
-                'RightOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' }
-              },
-            },
-            :attributes! => { 'Filter' => { 'xsi:type' => 'tns:ComplexFilterPart' }}
+              '@xsi:type'       => 'tns:ComplexFilterPart',
+              'LeftOperand'     => { '@xsi:type' => 'tns:SimpleFilterPart' },
+              'RightOperand'    => { '@xsi:type' => 'tns:SimpleFilterPart' }
+            }
           }
         )
+    end
+
+    it 'raises error when missing left or right operand' do
+      expect{subject.normalize_filter({'LogicalOperator' => 'AND'})}
+        .to raise_error /Missing SimpleFilterParts/
     end
 
     it 'returns simple filter part by default' do
@@ -92,8 +95,8 @@ describe FuelSDK::Soap do
           {
             'Filter' => {
               'SimpleOperator' => 'equals',
-            },
-            :attributes! => { 'Filter' => { 'xsi:type' => 'tns:SimpleFilterPart' }}
+              '@xsi:type'      => 'tns:SimpleFilterPart',
+            }
           }
         )
     end

@@ -35,9 +35,9 @@ describe FuelSDK::Soap do
       client.internal_token = 'innerspace'
       expect(client.header).to eq(
         {
-          'oAuth' => { 'oAuthToken' => 'innerspace' },
-          :attributes! => {
-            'oAuth' => { 'xmlns' => 'http://exacttarget.com' }
+          'oAuth' => {
+            'oAuthToken' => 'innerspace',
+            '@xmlns' => 'http://exacttarget.com'
           }
         }
       )
@@ -69,16 +69,23 @@ describe FuelSDK::Soap do
       it 'formats soap :create message for single object' do
         expect(subject.soap_post 'Subscriber', 'EmailAddress' => 'test@fuelsdk.com' ).to eq([:create,
           {
-            'Objects' => [{'EmailAddress' => 'test@fuelsdk.com'}],
-            :attributes! => {'Objects' => {'xsi:type' => ('tns:Subscriber')}}
+            'Objects' => [{
+              'EmailAddress' => 'test@fuelsdk.com',
+              '@xsi:type'    => 'tns:Subscriber'
+            }]
           }])
       end
 
       it 'formats soap :create message for multiple objects' do
         expect(subject.soap_post 'Subscriber', [{'EmailAddress' => 'first@fuelsdk.com'}, {'EmailAddress' => 'second@fuelsdk.com'}] ).to eq([:create,
           {
-            'Objects' => [{'EmailAddress' => 'first@fuelsdk.com'}, {'EmailAddress' => 'second@fuelsdk.com'}],
-            :attributes! => {'Objects' => {'xsi:type' => ('tns:Subscriber')}}
+            'Objects' => [{
+              'EmailAddress' => 'first@fuelsdk.com',
+              '@xsi:type'    => 'tns:Subscriber'
+            }, {
+              'EmailAddress' => 'second@fuelsdk.com',
+              '@xsi:type'    => 'tns:Subscriber'
+            }]
           }])
       end
 
@@ -88,9 +95,9 @@ describe FuelSDK::Soap do
           {
             'Objects' => [{
               'EmailAddress' => 'test@fuelsdk.com',
-              'Attributes' => [{'Name' => 'First Name', 'Value' => 'first'}],
-            }],
-            :attributes! => {'Objects' => {'xsi:type' => ('tns:Subscriber')}}
+              'Attributes'   => [{'Name' => 'First Name', 'Value' => 'first'}],
+              '@xsi:type'    => 'tns:Subscriber'
+            }]
           }])
       end
 
@@ -100,12 +107,12 @@ describe FuelSDK::Soap do
           {
             'Objects' => [{
               'EmailAddress' => 'test@fuelsdk.com',
-              'Attributes' => [
+              'Attributes'   => [
                 {'Name' => 'First Name', 'Value' => 'first'},
                 {'Name' => 'Last Name', 'Value' => 'subscriber'},
               ],
-            }],
-            :attributes! => {'Objects' => {'xsi:type' => ('tns:Subscriber')}}
+              '@xsi:type'    => 'tns:Subscriber'
+            }]
           }])
       end
 
@@ -115,18 +122,19 @@ describe FuelSDK::Soap do
           {
             'Objects' => [
               {'EmailAddress' => 'first@fuelsdk.com',
-                'Attributes' => [
+                'Attributes'  => [
                   {'Name' => 'First Name', 'Value' => 'first'},
                   {'Name' => 'Last Name', 'Value' => 'subscriber'},
-                ]
+                ],
+                '@xsi:type'    => 'tns:Subscriber'
               },
               {'EmailAddress' => 'second@fuelsdk.com',
                 'Attributes' => [
                   {'Name' => 'First Name', 'Value' => 'second'},
                   {'Name' => 'Last Name', 'Value' => 'subscriber'},
-                ]
-              }],
-            :attributes! => {'Objects' => {'xsi:type' => ('tns:Subscriber')}}
+                ],
+                '@xsi:type'    => 'tns:Subscriber'
+              }]
           }])
       end
     end

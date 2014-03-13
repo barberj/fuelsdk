@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:wsa='http://schemas.xmlsoap.org/ws/2004/08/addressing' xmlns:wsse='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd' xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+ <soap:Header>
+  <wsa:Action>RetrieveResponse</wsa:Action>
+  <wsa:MessageID>urn:uuid:a37b6a75-e52e-45d0-a6be-faaf036aa85c</wsa:MessageID>
+  <wsa:RelatesTo>urn:uuid:bdbcaa62-51ea-4c5c-8afa-f0adec46db6c</wsa:RelatesTo>
+  <wsa:To>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</wsa:To>
+  <wsse:Security>
+   <wsu:Timestamp wsu:Id='Timestamp-f6dd959a-56fe-4435-b32e-1f59ec0f39a8'>
+    <wsu:Created>2014-03-13T16:03:28Z</wsu:Created>
+    <wsu:Expires>2014-03-13T16:08:28Z</wsu:Expires>
+   </wsu:Timestamp>
+  </wsse:Security>
+ </soap:Header>
+ <soap:Body>
+  <RetrieveResponseMsg xmlns='http://exacttarget.com/wsdl/partnerAPI'>
+   <OverallStatus>OK</OverallStatus>
+   <RequestID>d4358fcd-24f4-415c-895e-08cfe10623e6</RequestID>
+   <Results xsi:type='Subscriber'>
+    <Client>
+     <ID>6173122</ID>
+    </Client>
+    <PartnerKey/>
+    <CreatedDate>2013-10-08T09:38:00</CreatedDate>
+    <ID>16234076</ID>
+    <ObjectID xsi:nil='true'/>
+    <EmailAddress>first_sub@kevy.com</EmailAddress>
+    <Attributes>
+     <Name>Available Weekends</Name>
+     <Value>False</Value>
+    </Attributes>
+    <Attributes>
+     <Name>First Name</Name>
+     <Value>First</Value>
+    </Attributes>
+    <Attributes>
+     <Name>Last Name</Name>
+     <Value>Last</Value>
+    </Attributes>
+    <Attributes>
+     <Name>Company</Name>
+     <Value/>
+    </Attributes>
+    <Attributes>
+     <Name>Phone Number</Name>
+     <Value/>
+    </Attributes>
+    <Attributes>
+     <Name>Email Address</Name>
+     <Value>first_sub@kevy.com</Value>
+    </Attributes>
+    <Attributes>
+     <Name>Gender</Name>
+     <Value/>
+    </Attributes>
+    <Attributes>
+     <Name>Birthday</Name>
+     <Value/>
+    </Attributes>
+    <SubscriberKey>first_sub@kevy.com</SubscriberKey>
+    <Status>Active</Status>
+    <EmailTypePreference>HTML</EmailTypePreference>
+   </Results>
+  </RetrieveResponseMsg>
+ </soap:Body>
+</soap:Envelope>
