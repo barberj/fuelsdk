@@ -14,12 +14,12 @@ describe FuelSDK::Soap do
       expect(subject.create_action_message('Definitions', 'QueryDefinition', [{'ObjectID' => 1}], 'start'))
         .to eq(
         {
-          'Action' => 'start',
+          'Action'      => 'start',
           'Definitions' => {
-            'Definition' => [{'ObjectID' => 1}],
-            :attributes! => {
-              'Definition' => { 'xsi:type' => 'tns:QueryDefinition'}
-            }
+            'Definition' => [{
+              'ObjectID'  => 1,
+              '@xsi:type' => 'tns:QueryDefinition'
+            }]
           }
         }
       )
@@ -29,12 +29,12 @@ describe FuelSDK::Soap do
       expect(subject.create_action_message('Definitions', 'QueryDefinition', {'ObjectID' => 1}, 'start'))
         .to eq(
         {
-          'Action' => 'start',
+          'Action'      => 'start',
           'Definitions' => {
-            'Definition' => [{'ObjectID' => 1}],
-            :attributes! => {
-              'Definition' => { 'xsi:type' => 'tns:QueryDefinition'}
-            }
+            'Definition' => [{
+              'ObjectID'  => 1,
+              '@xsi:type' => 'tns:QueryDefinition'
+            }]
           }
         }
       )

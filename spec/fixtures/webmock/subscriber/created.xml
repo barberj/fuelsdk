@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:wsa='http://schemas.xmlsoap.org/ws/2004/08/addressing' xmlns:wsse='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd' xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+ <soap:Header>
+  <wsa:Action>CreateResponse</wsa:Action>
+  <wsa:MessageID>urn:uuid:13681da3-f69b-4e30-a12e-b699a8f0add7</wsa:MessageID>
+  <wsa:RelatesTo>urn:uuid:67c7bba3-217c-4708-a258-e43238d542d5</wsa:RelatesTo>
+  <wsa:To>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous
+  </wsa:To>
+  <wsse:Security>
+   <wsu:Timestamp wsu:Id='Timestamp-dbfd6153-216b-43a1-96fd-4d9d05c0f065'>
+    <wsu:Created>2014-03-13T14:39:20Z</wsu:Created>
+    <wsu:Expires>2014-03-13T14:44:20Z</wsu:Expires>
+   </wsu:Timestamp>
+  </wsse:Security>
+ </soap:Header>
+ <soap:Body>
+  <CreateResponse xmlns='http://exacttarget.com/wsdl/partnerAPI'>
+   <Results>
+    <StatusCode>OK</StatusCode>
+    <StatusMessage>Created Subscriber.</StatusMessage>
+    <OrdinalID>0</OrdinalID>
+    <NewID>37576181</NewID>
+    <Object xsi:type='Subscriber'>
+     <PartnerKey xsi:nil='true'/>
+     <ID>37576181</ID>
+     <ObjectID xsi:nil='true'/>
+     <EmailAddress>1394721559RubySDKExample@jb.kevy.com</EmailAddress>
+     <Attributes>
+      <Name>Gender</Name>
+      <Value>M</Value>
+     </Attributes>
+     <Attributes>
+      <Name>Available Weekends</Name>
+      <Value>true</Value>
+     </Attributes>
+    </Object>
+   </Results>
+   <RequestID>9a926121-f498-4d01-9584-6cfeef22d51d</RequestID>
+   <OverallStatus>OK</OverallStatus>
+  </CreateResponse>
+ </soap:Body>
+</soap:Envelope>

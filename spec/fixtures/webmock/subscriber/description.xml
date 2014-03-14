@@ -1,0 +1,475 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<soap:Envelope xmlns:soap='http://schemas.xmlsoap.org/soap/envelope/' xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xmlns:xsd='http://www.w3.org/2001/XMLSchema' xmlns:wsa='http://schemas.xmlsoap.org/ws/2004/08/addressing' xmlns:wsse='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd' xmlns:wsu='http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd'>
+ <soap:Header>
+  <wsa:Action>DescribeResponse</wsa:Action>
+  <wsa:MessageID>urn:uuid:9e9e86e4-ca36-4b70-a68b-cab4799d2729</wsa:MessageID>
+  <wsa:RelatesTo>urn:uuid:02a23a73-b564-471a-a53e-ad8cc984bc75</wsa:RelatesTo>
+  <wsa:To>http://schemas.xmlsoap.org/ws/2004/08/addressing/role/anonymous</wsa:To>
+  <wsse:Security>
+   <wsu:Timestamp wsu:Id='Timestamp-e962122e-73f9-440f-993f-99c6431720cb'>
+    <wsu:Created>2014-03-13T13:05:24Z</wsu:Created>
+    <wsu:Expires>2014-03-13T13:10:24Z</wsu:Expires>
+   </wsu:Timestamp>
+  </wsse:Security>
+ </soap:Header>
+ <soap:Body>
+  <DefinitionResponseMsg xmlns='http://exacttarget.com/wsdl/partnerAPI'>
+   <ObjectDefinition>
+    <ObjectType>Subscriber</ObjectType>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>ID</Name>
+     <DataType>Int32</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <IsRequired>true</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>PartnerKey</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <MaxLength>64</MaxLength>
+     <IsRequired>false</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>CreatedDate</Name>
+     <DataType>DateTime</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <IsRequired>false</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Client.ID</Name>
+     <DataType>Int32</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <IsRequired>true</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Client.PartnerClientKey</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <MaxLength>64</MaxLength>
+     <IsRequired>false</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>EmailAddress</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <MaxLength>254</MaxLength>
+     <IsRequired>true</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>SubscriberKey</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <MaxLength>254</MaxLength>
+     <IsRequired>true</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>UnsubscribedDate</Name>
+     <DataType>DateTime</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <IsRequired>false</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Status</Name>
+     <DataType>SubscriberStatus</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <IsRequired>true</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>EmailTypePreference</Name>
+     <DataType>EmailType</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>true</IsRetrievable>
+     <IsRequired>true</IsRequired>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Attributes</Name>
+     <DataType>Attribute[]</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>PartnerType</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Lists</Name>
+     <DataType>SubscriberList[]</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>GlobalUnsubscribeCategory</Name>
+     <DataType>GlobalUnsubscribeCategory</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>SubscriberTypeDefinition</Name>
+     <DataType>SubscriberTypeDefinition</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Addresses</Name>
+     <DataType>SubscriberAddress[]</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>PrimarySMSAddress</Name>
+     <DataType>SMSAddress</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>PrimarySMSPublicationStatus</Name>
+     <DataType>SubscriberAddressStatus</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>PrimaryEmailAddress</Name>
+     <DataType>EmailAddress</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Locale</Name>
+     <DataType>Locale</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Client</Name>
+     <DataType>ClientID</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>PartnerProperties</Name>
+     <DataType>APIProperty[]</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>ModifiedDate</Name>
+     <DataType>DateTime</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>ObjectID</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>CustomerKey</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>Owner</Name>
+     <DataType>Owner</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>CorrelationID</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>ObjectState</Name>
+     <DataType>String</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <Properties>
+     <PartnerKey xsi:nil='true'/>
+     <ObjectID xsi:nil='true'/>
+     <Name>IsPlatformObject</Name>
+     <DataType>Boolean</DataType>
+     <IsUpdatable>true</IsUpdatable>
+     <IsRetrievable>false</IsRetrievable>
+    </Properties>
+    <ExtendedProperties>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1109</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Gender</Name>
+      <DataType>text</DataType>
+      <PropertyType>string</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>3</DisplayOrder>
+     </ExtendedProperty>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1110</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Birthday</Name>
+      <DataType>date</DataType>
+      <PropertyType>datetime</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>4</DisplayOrder>
+     </ExtendedProperty>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1111</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Available Weekends</Name>
+      <DataType>boolean</DataType>
+      <PropertyType>boolean</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <DefaultValue>false</DefaultValue>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>5</DisplayOrder>
+     </ExtendedProperty>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1279</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>First Name</Name>
+      <DataType>text</DataType>
+      <PropertyType>string</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>7</DisplayOrder>
+     </ExtendedProperty>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1280</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Last Name</Name>
+      <DataType>text</DataType>
+      <PropertyType>string</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>8</DisplayOrder>
+     </ExtendedProperty>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>2198</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Company</Name>
+      <DataType>text</DataType>
+      <PropertyType>string</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>9</DisplayOrder>
+     </ExtendedProperty>
+     <ExtendedProperty>
+      <PartnerKey xsi:nil='true'/>
+      <ID>2199</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Phone Number</Name>
+      <DataType>text</DataType>
+      <PropertyType>string</PropertyType>
+      <IsAccountProperty>false</IsAccountProperty>
+      <Label>a</Label>
+      <Description/>
+      <IsRequired>false</IsRequired>
+      <IsViewable>true</IsViewable>
+      <IsEditable>true</IsEditable>
+      <IsRestrictedPicklist>false</IsRestrictedPicklist>
+      <IsSendTime>false</IsSendTime>
+      <DisplayOrder>10</DisplayOrder>
+     </ExtendedProperty>
+    </ExtendedProperties>
+    <ChildObjects>
+     <Name>Attributes</Name>
+     <Properties>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1109</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Gender</Name>
+      <DataType>text</DataType>
+      <Markups>
+       <Name>SubstitutionString</Name>
+       <Value>%%Gender%%</Value>
+      </Markups>
+     </Properties>
+    </ChildObjects>
+    <ChildObjects>
+     <Name>Attributes</Name>
+     <Properties>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1110</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Birthday</Name>
+      <DataType>date</DataType>
+      <Markups>
+       <Name>SubstitutionString</Name>
+       <Value>%%Birthday%%</Value>
+      </Markups>
+     </Properties>
+    </ChildObjects>
+    <ChildObjects>
+     <Name>Attributes</Name>
+     <Properties>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1279</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>First Name</Name>
+      <DataType>text</DataType>
+      <Markups>
+       <Name>SubstitutionString</Name>
+       <Value>%%First Name%%</Value>
+      </Markups>
+     </Properties>
+    </ChildObjects>
+    <ChildObjects>
+     <Name>Attributes</Name>
+     <Properties>
+      <PartnerKey xsi:nil='true'/>
+      <ID>1280</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Last Name</Name>
+      <DataType>text</DataType>
+      <Markups>
+       <Name>SubstitutionString</Name>
+       <Value>%%Last Name%%</Value>
+      </Markups>
+     </Properties>
+    </ChildObjects>
+    <ChildObjects>
+     <Name>Attributes</Name>
+     <Properties>
+      <PartnerKey xsi:nil='true'/>
+      <ID>2198</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Company</Name>
+      <DataType>text</DataType>
+      <Markups>
+       <Name>SubstitutionString</Name>
+       <Value>%%Company%%</Value>
+      </Markups>
+     </Properties>
+    </ChildObjects>
+    <ChildObjects>
+     <Name>Attributes</Name>
+     <Properties>
+      <PartnerKey xsi:nil='true'/>
+      <ID>2199</ID>
+      <ObjectID xsi:nil='true'/>
+      <Name>Phone Number</Name>
+      <DataType>text</DataType>
+      <Markups>
+       <Name>SubstitutionString</Name>
+       <Value>%%Phone Number%%</Value>
+      </Markups>
+     </Properties>
+    </ChildObjects>
+   </ObjectDefinition>
+   <RequestID>548d7cf3-3581-47e7-8c26-5c06fbdee4ac</RequestID>
+  </DefinitionResponseMsg>
+ </soap:Body>
+</soap:Envelope>

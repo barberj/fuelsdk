@@ -94,8 +94,10 @@ module FuelSDK
     def header
       raise 'Require legacy token for soap header' unless internal_token
       {
-        'oAuth' => {'oAuthToken' => internal_token},
-        :attributes! => { 'oAuth' => { 'xmlns' => 'http://exacttarget.com' }}
+        'oAuth' => {
+          'oAuthToken' => internal_token,
+          '@xmlns' => 'http://exacttarget.com'
+         }
       }
     end
 
@@ -229,21 +231,20 @@ module FuelSDK
     end
 
     def add_simple_filter_part filter
+      filter['@xsi:type'] = 'tns:SimpleFilterPart'
       {
-        'Filter' => filter,
-        :attributes! => { 'Filter' => { 'xsi:type' => 'tns:SimpleFilterPart' }}
+        'Filter' => filter
       }
     end
 
     def add_complex_filter_part filter
-      filter[:attributes!] = {
-        'LeftOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' },
-        'RightOperand' => { 'xsi:type' => 'tns:SimpleFilterPart' }
-      }
+      raise 'Missing SimpleFilterParts' if !filter['LeftOperand'] || !filter['RightOperand']
+      filter['LeftOperand']['@xsi:type']  = 'tns:SimpleFilterPart'
+      filter['RightOperand']['@xsi:type'] = 'tns:SimpleFilterPart'
+      filter['@xsi:type'] = 'tns:ComplexFilterPart'
 
       {
-        'Filter' => filter,
-        :attributes! => { 'Filter' => { 'xsi:type' => 'tns:ComplexFilterPart' }}
+        'Filter' => filter
       }
     end
 
@@ -290,9 +291,10 @@ module FuelSDK
       soap_cud :create, object_type, properties
     end
 
-    def soap_patch object_type, properties
+    def soap_put object_type, properties
       soap_cud :update, object_type, properties
     end
+    alias_method :soap_patch, :soap_put
 
     def soap_delete object_type, properties
       soap_cud :delete, object_type, properties
@@ -300,13 +302,14 @@ module FuelSDK
 
     def create_action_message message_type, object_type, properties, action
       properties = Array.wrap(properties)
+      properties.each do |property|
+        property['@xsi:type'] = "tns:#{object_type}"
+      end
+
       {
         'Action' => action,
         message_type => {
           message_type.singularize => properties,
-          :attributes! => {
-            message_type.singularize => { 'xsi:type' => ('tns:' + object_type) }
-          }
         }
       }
     end
@@ -324,10 +327,12 @@ module FuelSDK
     def create_objects_message object_type, object_properties
       raise 'Object properties must be a List' unless object_properties.kind_of? Array
       raise 'Object properties must be a List of Hashes' unless object_properties.first.kind_of? Hash
+      object_properties.each do |property|
+        property['@xsi:type'] = "tns:#{object_type}"
+      end
 
       {
         'Objects' => object_properties,
-        :attributes! => {'Objects' => { 'xsi:type' => ('tns:' + object_type) }}
       }
     end
 

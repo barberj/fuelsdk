@@ -1,0 +1,19 @@
+HTTP/1.1 200 OK
+Access-Control-Allow-Credentials: true
+Access-Control-Allow-Methods: POST,PUT,PATCH,DELETE,GET,OPTIONS
+Access-Control-Allow-Origin: *
+Access-Control-Max-Age: 86400
+content-type: application/json
+Date: Thu, 13 Mar 2014 13:51:52 GMT
+Server: Mashery Proxy
+X-Mashery-Message-ID: c8e8d3d1-197b-41e4-9cd0-e64537dc80b2
+X-Mashery-Responder: prod-j-worker-us-east-1c-34.mashery.com
+Content-Length: 548
+Connection: Close
+
+{
+  "accessToken": "access",
+  "expiresIn": 1200,
+  "legacyToken": "legacy",
+  "refreshToken": "refresh"
+}

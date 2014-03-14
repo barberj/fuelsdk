@@ -1,8 +1,8 @@
 def auth
   {
     'client' => {
-      'id' => YOURID
-      'secret' => YOURSERET
+      'id'     => YOURID,
+      'secret' => YOURSECRET
     }
   }
 end
