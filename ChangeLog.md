@@ -1,6 +1,11 @@
 FuelSDK-Ruby
 ============
 
+2014-03-13: Version 0.1.7
+```
+  Update setting attributes for Savon 2.3 support
+```
+
 2013-10-18: Version 0.1.6
 ```
   allow endpoint to be set
