@@ -124,7 +124,7 @@ module FuelSDK
       s.client = self
       lists = ids.collect{|id| {'ID' => id}}
       s.properties = {"EmailAddress" => email, "Lists" => lists}
-      s.propertiess['SubscriberKey'] = subscriber_key if subscriber_key
+      s.properties['SubscriberKey'] = subscriber_key if subscriber_key
 
       # Try to add the subscriber
       if(rsp = s.post and rsp.results.first[:error_code] == '12014')
