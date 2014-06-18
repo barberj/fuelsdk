@@ -1,6 +1,11 @@
 FuelSDK-Ruby
 ============
 
+2014-06-18: Version 0.1.8
+```
+  Merge pull request fixing typo
+```
+
 2014-03-13: Version 0.1.7
 ```
   Update setting attributes for Savon 2.3 support
