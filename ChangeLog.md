@@ -1,6 +1,11 @@
 FuelSDK-Ruby
 ============
 
+2014-06-23: Version 0.1.9
+```
+  Fix ContinueRequest
+```
+
 2014-06-18: Version 0.1.8
 ```
   Merge pull request fixing typo

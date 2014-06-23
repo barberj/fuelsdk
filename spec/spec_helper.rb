@@ -13,8 +13,11 @@ RSpec.configure do |config|
   config.mock_with :rspec
   config.include Savon::SpecHelper
 
-  # Use color in STDOUT
-  config.color_enabled = true
+  begin
+    # Use color in STDOUT
+    config.color_enabled = true
+  rescue
+  end
 
   # Use the specified formatter
   config.formatter = :documentation
