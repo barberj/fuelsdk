@@ -199,26 +199,24 @@ module FuelSDK
       end
 
       def post
-        add_customer_key self.properties
+        ensure_customer_key self.properties
         super
       end
 
       def patch
-        add_customer_key self.properties
+        ensure_customer_key self.properties
         super
       end
 
       def delete
-        add_customer_key self.properties
+        ensure_customer_key self.properties
         super
       end
 
       private
-        def add_customer_key data
-          data.each do |d|
-            next if d.include? 'CustomerKey'
-            d['CustomerKey'] = customer_key
-          end
+        def ensure_customer_key data
+          return if data.has_key?('CustomerKey')
+          data['CustomerKey'] = customer_key
         end
 
         def retrieve_required
