@@ -124,6 +124,7 @@ module FuelSDK
     end
 
     def describe_object_type_message object_type
+      object_type = "TriggeredSendDefiniton" if object_type == "TriggeredSend"
       {
         'DescribeRequests' => {
           'ObjectDefinitionRequest' => {
