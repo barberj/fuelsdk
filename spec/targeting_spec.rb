@@ -51,11 +51,8 @@ describe FuelSDK::Targeting do
       end
 
       it 'raises error on unsuccessful responses' do
-        client.stub(:get).and_return{
-          rsp = double(FuelSDK::HTTPResponse)
-          rsp.stub(:success?).and_return(false)
-          rsp
-        }
+        client.stub(:get) { instance_double(FuelSDK::HTTPResponse, success?: false) }
+
         expect{ client.send(:determine_stack) }.to raise_error 'Unable to determine stack'
       end
     end
