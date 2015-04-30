@@ -8,7 +8,7 @@ describe FuelSDK::Soap do
   describe '#get_all_object_properties' do
 
     it 'returns properties for object_type' do
-      response = mock(FuelSDK::DescribeResponse)
+      response = double(FuelSDK::DescribeResponse)
       response.should_receive(:success?).and_return(true)
 
       subject.should_receive(:soap_describe)
@@ -20,7 +20,7 @@ describe FuelSDK::Soap do
     end
 
     it 'raises an DescribeError when describe is unsuccessful' do
-      response = mock(FuelSDK::DescribeResponse)
+      response = double(FuelSDK::DescribeResponse)
       response.should_receive(:success?).and_return(false)
       response.stub(:status).and_return('ERROR')
 
@@ -176,7 +176,7 @@ describe FuelSDK::Soap do
         .with('object')
         .and_return(nil)
 
-      response = mock(FuelSDK::DescribeResponse)
+      response = double(FuelSDK::DescribeResponse)
       response.stub(:retrievable).and_return(['prop'])
       subject.should_receive(:get_all_object_properties)
         .and_return(response)
@@ -253,7 +253,7 @@ describe FuelSDK::Soap do
       }
 
       rsp = subject.soap_get('invalid')
-      expect(rsp.success?).to be_false
+      expect(rsp.success?).to be false
     end
   end
 

@@ -372,7 +372,7 @@ describe FuelSDK::DataExtension::Row do
     end
 
     it 'updates missing' do
-      rsp = mock(FuelSDK::SoapResponse)
+      rsp = double(FuelSDK::SoapResponse)
       rsp.stub(:results).and_return([{:name => 'Products', :customer_key => 'ProductsKey'}])
       rsp.stub(:success?).and_return true
 
@@ -441,7 +441,7 @@ describe FuelSDK::DataExtension::Row do
     it 'uses name to get customer key for inseration' do
       subject.name = 'Subscribers'
 
-      rsp = mock(FuelSDK::SoapResponse)
+      rsp = double(FuelSDK::SoapResponse)
       rsp.stub(:results).and_return([{:name => 'Products', :customer_key => 'ProductsKey'}])
       rsp.stub(:success?).and_return true
 
@@ -458,7 +458,6 @@ describe FuelSDK::DataExtension::Row do
 
     it 'correctly formats array property' do
       subject.customer_key = 'Subscribers'
-
       subject.properties = [{'Name' => 'Justin'}]
 
       expect(subject.post).to eq(

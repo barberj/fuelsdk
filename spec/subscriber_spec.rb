@@ -78,7 +78,7 @@ describe 'Subscriber' do
 
     rsp = client.soap_get('Subscriber', ['ID', 'EmailAddress'])
 
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.count).to eq 2
 
     expect(rsp.results.first[:id]).to eq '16234076'
@@ -115,7 +115,7 @@ describe 'Subscriber' do
 
     rsp = client.soap_get('Subscriber')
 
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.count).to eq 2
 
     expect(rsp.results.first[:id]).to eq '16234076'
@@ -164,7 +164,7 @@ describe 'Subscriber' do
       'Value'          => '16234076'
     )
 
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.count).to eq 1
 
     expect(rsp.results.first[:id]).to eq '16234076'
@@ -225,7 +225,7 @@ describe 'Subscriber' do
       'LogicalOperator' => 'OR'
     })
 
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.count).to eq 1
 
     expect(rsp.results.first[:id]).to eq '16234076'
@@ -256,7 +256,7 @@ describe 'Subscriber' do
       'Gender'             => 'M',
       'Available Weekends' => true
     )
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.first[:new_id]).to eq '37576181'
   end
   it 'updates' do
@@ -281,7 +281,7 @@ describe 'Subscriber' do
       'Gender'             => 'M',
       'Available Weekends' => true
     )
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.first).to include(
       :status_code    => "OK",
       :status_message => "Updated Subscriber."
@@ -313,7 +313,7 @@ describe 'Subscriber' do
       'Gender'             => 'M',
       'Available Weekends' => true
     )
-    expect(rsp.success).to be_true
+    expect(rsp.success).to be true
     expect(rsp.results.first).to include(
       :status_code    => "OK",
       :status_message => "Subscriber deleted"
