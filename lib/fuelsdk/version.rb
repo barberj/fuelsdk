@@ -1,3 +1,3 @@
 module FuelSDK
-  VERSION = "0.1.9.RP"
+  VERSION = "0.1.10.RP"
 end
