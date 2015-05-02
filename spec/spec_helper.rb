@@ -6,6 +6,7 @@ $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
 require 'fuelsdk'
 require 'pry'
+require 'rspec/its'
 require 'webmock/rspec'
 require "savon/mock/spec_helper"
 
