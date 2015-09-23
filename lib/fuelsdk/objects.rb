@@ -54,7 +54,9 @@ module FuelSDK
       attr_reader :id
 
       alias props= properties= # backward compatibility
+      alias props properties # backward compatibility
       alias authStub= client= # backward compatibility
+      alias authStub client # backward compatibility
 
       def id
         self.class.id
