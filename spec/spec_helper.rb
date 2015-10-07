@@ -53,6 +53,8 @@ shared_examples_for 'Soap Read Object' do
   # begin backwards compat
   it { should respond_to :props= }
   it { should respond_to :authStub= }
+  it { should respond_to :props }
+  it { should respond_to :authStub }
   # end
   it { should respond_to :id }
   it { should respond_to :properties }
