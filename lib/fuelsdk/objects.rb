@@ -17,6 +17,10 @@ module FuelSDK
           client.soap_post id, Array.wrap(properties)
         end
 
+        def upsert
+          client.soap_upsert id, Array.wrap(properties)
+        end
+
         def patch
           client.soap_patch id, Array.wrap(properties)
         end
