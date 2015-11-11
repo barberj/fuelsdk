@@ -291,6 +291,11 @@ module FuelSDK
       soap_cud :create, object_type, properties
     end
 
+    def soap_upsert object_type, properties
+      options = {'SaveOptions' => [{'SaveOption' => {'PropertyName'=> "*", 'SaveAction' => "UpdateAdd"}}]}
+      soap_cud :update, object_type, properties, options
+    end
+
     def soap_put object_type, properties
       soap_cud :update, object_type, properties
     end
@@ -386,9 +391,10 @@ module FuelSDK
 
     private
 
-      def soap_cud action, object_type, properties
+      def soap_cud action, object_type, properties, options = {}
         properties = normalize_properties_for_cud object_type, properties
         message = create_objects_message object_type, properties
+        message['Options'] = options
         soap_request action, message
       end
 
