@@ -293,7 +293,7 @@ module FuelSDK
 
     def soap_upsert object_type, properties
       options = {'SaveOptions' => [{'SaveOption' => {'PropertyName'=> "*", 'SaveAction' => "UpdateAdd"}}]}
-      soap_cud :create, object_type, properties, options
+      soap_cud :update, object_type, properties, options
     end
 
     def soap_put object_type, properties

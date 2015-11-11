@@ -207,6 +207,11 @@ module FuelSDK
         super
       end
 
+      def upsert
+        add_customer_key self.properties
+        super
+      end
+
       def patch
         add_customer_key self.properties
         super
