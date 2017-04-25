@@ -39,7 +39,7 @@ module FuelSDK
 
   class Client
     attr_accessor :debug, :auth_token, :internal_token, :refresh_token,
-      :id, :secret, :signature
+      :id, :secret, :signature, :refresh_token_url
 
     include FuelSDK::Soap
     include FuelSDK::Rest
@@ -75,6 +75,9 @@ module FuelSDK
 
       self.jwt = params['jwt'] if params['jwt']
       self.refresh_token = params['refresh_token'] if params['refresh_token']
+      # https://developer.salesforce.com/docs/atlas.en-us.mc-getting-started.meta/mc-getting-started/requestToken.htm
+      # Allow different request token urls to be used to specify sandbox / production environment
+      self.refresh_token_url = params['refresh_token_url'] if params['refresh_token_url']
 
       self.wsdl = params["defaultwsdl"] if params["defaultwsdl"]
     end
@@ -106,7 +109,7 @@ module FuelSDK
       if (self.auth_token.nil? || force)
         clear_client!
         options =  request_token_options(request_token_data)
-        response = post("https://auth.exacttargetapis.com/v1/requestToken", options)
+        response = post(self.refresh_token_url || "https://auth.exacttargetapis.com/v1/requestToken", options)
         raise "Unable to refresh token: #{response['message']}" unless response.has_key?('accessToken')
 
         self.auth_token = response['accessToken']
