@@ -32,6 +32,16 @@ Add a require statement to reference the Fuel SDK's functionality:
 Next, create an instance of the Client class:
 > myClient = FuelSDK::Client.new {'client' => { 'id' => CLIENTID, 'secret' => SECRET }}
 
+https://developer.salesforce.com/docs/atlas.en-us.mc-getting-started.meta/mc-getting-started/requestToken.htm
+
+Note: Added new option to client initilizer 'refresh_token_url' (changes depending on ET environment) 
+> myClient = FuelSDK::Client.new { 'client' => {...}, 'refresh_token_url' => 'https://auth-test.exacttargetapis.com/v1/requestToken', 'defaultwsdl' => 'https://webservice.test.exacttarget.com/etframework.wsdl' }
+
+https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/getting_started_developers_and_the_exacttarget_api.htm
+
+Note: Added 'endpoint_service_url' accessor to Targeting to allow specifying different soap endpoint
+> myClient.endpoint_service_url = 'https://webservice.test.exacttarget.com/Service.asmx' # depending on ET instance
+
 Create an instance of the object type we want to work with:
 > list = FuelSDK::List.new
 
