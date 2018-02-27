@@ -19,7 +19,15 @@ module FuelSDK::Targeting
     refresh unless self.auth_token
     options = {'params' => {'access_token' => self.auth_token}}
     response = get(endpoint_service_url || "https://www.exacttargetapis.com/platform/v1/endpoints/soap", options)
-    raise 'Unable to determine stack' unless response.success?
+
+    unless response.success?
+      # if unsuccessful, force refresh token and try with new token before raising exception
+      refresh!
+      options = {'params' => {'access_token' => self.auth_token}}
+      response = get(endpoint_service_url || "https://www.exacttargetapis.com/platform/v1/endpoints/soap", options)
+
+      raise "Unable to determine stack #{response.code}, #{response.body.inspect}" unless response.success?
+    end
     response['url']
   end
 end
