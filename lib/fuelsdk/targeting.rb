@@ -10,7 +10,7 @@ module FuelSDK::Targeting
   end
 
   def endpoint
-    @endpoint ||= determine_stack(@endpoint_service_url)
+    @endpoint ||= self.targeting_endpoint || determine_stack(@endpoint_service_url)
   end
 
   # https://developer.salesforce.com/docs/atlas.en-us.noversion.mc-apis.meta/mc-apis/getting_started_developers_and_the_exacttarget_api.htm
@@ -20,14 +20,8 @@ module FuelSDK::Targeting
     options = {'params' => {'access_token' => self.auth_token}}
     response = get(endpoint_service_url || "https://www.exacttargetapis.com/platform/v1/endpoints/soap", options)
 
-    unless response.success?
-      # if unsuccessful, force refresh token and try with new token before raising exception
-      refresh!
-      options = {'params' => {'access_token' => self.auth_token}}
-      response = get(endpoint_service_url || "https://www.exacttargetapis.com/platform/v1/endpoints/soap", options)
-
-      raise "Unable to determine stack #{response.code}, #{response.body.inspect}" unless response.success?
-    end
+    raise "Unable to determine stack #{response.code}, #{response.body.inspect}" unless response.success?
+    self.targeting_endpoint = response['url']
     response['url']
   end
 end

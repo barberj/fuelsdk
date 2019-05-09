@@ -39,7 +39,7 @@ module FuelSDK
 
   class Client
     attr_accessor :debug, :auth_token, :internal_token, :refresh_token,
-      :id, :secret, :signature, :refresh_token_url
+      :id, :secret, :signature, :refresh_token_url, :targeting_endpoint
 
     include FuelSDK::Soap
     include FuelSDK::Rest
@@ -80,6 +80,7 @@ module FuelSDK
       self.refresh_token_url = params['refresh_token_url'] if params['refresh_token_url']
 
       self.wsdl = params["defaultwsdl"] if params["defaultwsdl"]
+      self.targeting_endpoint = params['targeting_endpoint'] if params['targeting_endpoint']
     end
 
     def request_token_data
