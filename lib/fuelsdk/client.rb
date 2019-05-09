@@ -118,8 +118,9 @@ module FuelSDK
       end
     end
 
+    # Note: never force refresh, leave that to outside logic to update tokens after they expire
     def refresh!
-      refresh true
+      refresh
     end
 
     def AddSubscriberToList(email, ids, subscriber_key = nil)
